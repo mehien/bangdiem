@@ -14,6 +14,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@500;700&family=Dancing+Script:wght@700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
     <!-- html2canvas for downloading card as PNG -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
     <script>
         tailwind.config = {
             theme: {
@@ -37,12 +38,14 @@
             }
         }
     </script>
+
     <style>
         body {
             background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 50%, #f472b6 100%);
             min-height: 100vh;
             overflow-x: hidden;
         }
+
         /* Ambient floating hearts background */
         .heart-particle {
             position: absolute;
@@ -50,11 +53,13 @@
             animation: floatUp 8s infinite linear;
             opacity: 0.6;
         }
+
         @keyframes floatUp {
             0% { transform: translateY(100vh) scale(0.5) rotate(0deg); opacity: 0; }
             50% { opacity: 0.8; }
             100% { transform: translateY(-10vh) scale(1.2) rotate(360deg); opacity: 0; }
         }
+
         /* Glassmorphism input card */
         .glass-card {
             background: rgba(255, 255, 255, 0.85);
@@ -62,6 +67,7 @@
             border: 1px solid rgba(255, 255, 255, 0.6);
             box-shadow: 0 20px 40px rgba(219, 39, 119, 0.15);
         }
+
         /* Certificate Styling */
         .report-card {
             background: #ffffff;
@@ -69,6 +75,7 @@
             box-shadow: 0 25px 50px -12px rgba(219, 39, 119, 0.25);
             border: 8px solid #fbcfe8;
         }
+
         /* Custom scrollbar */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #fce7f3; }
@@ -76,11 +83,13 @@
     </style>
 </head>
 <body class="font-sans text-gray-700 antialiased flex flex-col justify-between min-h-screen relative">
+
     <!-- Background Floating Hearts -->
     <div id="heart-container" class="fixed inset-0 overflow-hidden pointer-events-none z-0"></div>
 
     <!-- Main Container -->
     <main class="container mx-auto px-4 py-8 relative z-10 flex-grow flex flex-col items-center justify-center">
+
         <!-- INPUT SECTION -->
         <div id="input-section" class="w-full max-w-md glass-card rounded-3xl p-8 text-center transition-all duration-500 transform hover:scale-[1.01]">
             <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-pink-100 text-pastel-deep mb-4 shadow-inner">
@@ -88,13 +97,14 @@
             </div>
             
             <h1 class="text-3xl font-extrabold text-pastel-deep font-comfortaa mb-2">Bảng Điểm Học Sinh</h1>
-            <p class="text-gray-600 text-sm mb-6">Nhập tên học sinh để xem bảng điểm học kỳ I 💕</p>
-            
+            <p class="text-gray-600 text-sm mb-6">Nhập chính xác tên học sinh trường TH&THCS Giang Tiên để xem bảng điểm 💕</p>
+
             <form id="name-form" onsubmit="generateReportCard(event)" class="space-y-5">
                 <div class="relative">
-                    <input type="text" id="student-name-input" required value="Vũ Minh Châu" placeholder="Nhập tên học sinh..." 
-                           class="w-full px-5 py-4 rounded-2xl border-2 border-pink-200 focus:border-pastel-deep focus:outline-none focus:ring-4 focus:ring-pink-100 transition-all text-gray-800 font-semibold placeholder-gray-400 text-center text-lg shadow-sm">
+                    <input type="text" id="student-name-input" required placeholder="Nhập tên học sinh (VD: Lã Trọng Bảo An)..." 
+                           class="w-full px-5 py-4 rounded-2xl border-2 border-pink-200 focus:border-pastel-deep focus:outline-none focus:ring-4 focus:ring-pink-100 transition-all text-gray-800 font-semibold placeholder-gray-400 text-center text-base shadow-sm">
                 </div>
+
                 <button type="submit" class="w-full py-4 bg-gradient-to-r from-pastel-rose to-pastel-deep hover:from-pink-500 hover:to-pink-700 text-white font-bold text-lg rounded-2xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 active:translate-y-0 transition-all flex items-center justify-center gap-3">
                     <i class="fa-solid fa-envelope-open-text text-xl"></i>
                     <span>Xem Bảng Điểm</span>
@@ -113,98 +123,37 @@
                 <div class="absolute -bottom-12 -left-12 w-32 h-32 bg-pink-100 rounded-full opacity-60"></div>
 
                 <!-- Header Title -->
-                <div class="text-center relative z-10 mb-8">
+                <div class="text-center relative z-10 mb-6">
                     <div class="inline-block bg-pink-100 text-pastel-deep font-bold px-4 py-1.5 rounded-full text-xs sm:text-sm tracking-wide mb-3 shadow-sm">
-                        <i class="fa-solid fa-star text-amber-400 mr-1"></i> BẢNG ĐIỂM KẾT QUẢ HỌC TẬP HK1
+                        <i class="fa-solid fa-star text-amber-400 mr-1"></i> TH&THCS GIANG TIÊN - LỚP 6B
                     </div>
                     <h2 class="text-3xl sm:text-4xl font-extrabold text-gray-800 font-comfortaa tracking-wide mb-2">
-                        BẢNG ĐIỂM HỌC SINH
+                        BẢNG ĐIỂM
                     </h2>
                     
                     <div class="mt-4">
                         <span class="text-lg text-gray-500 font-semibold">Học sinh: </span>
-                        <span id="display-name" class="text-3xl sm:text-4xl font-bold text-pastel-deep font-cursive block sm:inline mt-1 sm:mt-0">Vũ Minh Châu</span>
+                        <span id="display-name" class="text-2xl sm:text-3xl font-bold text-pastel-deep font-cursive block sm:inline mt-1 sm:mt-0"></span>
                     </div>
                 </div>
 
-                <hr class="border-pink-200 border-dashed my-6">
+                <hr class="border-pink-200 border-dashed my-4">
 
-                <!-- Simple Table: Subject & Score -->
-                <div class="relative z-10 mb-6">
+                <!-- Dynamic Table: Subject & Score -->
+                <div class="relative z-10 mb-2 overflow-x-auto">
                     <table class="w-full text-left border-collapse">
                         <thead>
                             <tr class="bg-pink-100/70 text-pastel-deep text-sm uppercase tracking-wider font-bold">
-                                <th class="p-3 sm:p-4 rounded-l-xl">Môn Học</th>
-                                <th class="p-3 sm:p-4 rounded-r-xl text-center">Đánh Giá / Điểm Số</th>
+                                <th class="p-3 rounded-l-xl">Môn Học</th>
+                                <th class="p-3 rounded-r-xl text-center">Điểm ĐG Thường Xuyên</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-pink-100 text-gray-700 font-semibold text-base sm:text-lg">
-                            <tr class="hover:bg-pink-50/50 transition">
-                                <td class="p-3 sm:p-4 flex items-center gap-3">
-                                    <span class="w-2.5 h-2.5 rounded-full bg-pastel-rose inline-block"></span>
-                                    <span>Toán Học</span>
-                                </td>
-                                <td class="p-3 sm:p-4 text-center font-extrabold text-pastel-deep">10.0</td>
-                            </tr>
-                            <tr class="hover:bg-pink-50/50 transition">
-                                <td class="p-3 sm:p-4 flex items-center gap-3">
-                                    <span class="w-2.5 h-2.5 rounded-full bg-purple-400 inline-block"></span>
-                                    <span>Ngữ Văn</span>
-                                </td>
-                                <td class="p-3 sm:p-4 text-center font-extrabold text-pastel-deep">10.0</td>
-                            </tr>
-                            <tr class="hover:bg-pink-50/50 transition">
-                                <td class="p-3 sm:p-4 flex items-center gap-3">
-                                    <span class="w-2.5 h-2.5 rounded-full bg-pastel-rose inline-block"></span>
-                                    <span>Tiếng Anh</span>
-                                </td>
-                                <td class="p-3 sm:p-4 text-center font-extrabold text-pastel-deep">10.0</td>
-                            </tr>
-                            <tr class="hover:bg-pink-50/50 transition">
-                                <td class="p-3 sm:p-4 flex items-center gap-3">
-                                    <span class="w-2.5 h-2.5 rounded-full bg-rose-400 inline-block"></span>
-                                    <span>Giáo Dục Công Dân</span>
-                                </td>
-                                <td class="p-3 sm:p-4 text-center font-extrabold text-pastel-deep">10.0</td>
-                            </tr>
-                            <tr class="hover:bg-pink-50/50 transition">
-                                <td class="p-3 sm:p-4 flex items-center gap-3">
-                                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 inline-block"></span>
-                                    <span>Lịch Sử & Địa Lí</span>
-                                </td>
-                                <td class="p-3 sm:p-4 text-center font-extrabold text-pastel-deep">9.0</td>
-                            </tr>
-                            <tr class="hover:bg-pink-50/50 transition">
-                                <td class="p-3 sm:p-4 flex items-center gap-3">
-                                    <span class="w-2.5 h-2.5 rounded-full bg-amber-400 inline-block"></span>
-                                    <span>Khoa Học Tự Nhiên</span>
-                                </td>
-                                <td class="p-3 sm:p-4 text-center font-extrabold text-pastel-deep">9.0</td>
-                            </tr>
-                            <tr class="hover:bg-pink-50/50 transition">
-                                <td class="p-3 sm:p-4 flex items-center gap-3">
-                                    <span class="w-2.5 h-2.5 rounded-full bg-sky-400 inline-block"></span>
-                                    <span>Công Nghệ</span>
-                                </td>
-                                <td class="p-3 sm:p-4 text-center font-extrabold text-pastel-deep">9.0</td>
-                            </tr>
-                            <tr class="hover:bg-pink-50/50 transition">
-                                <td class="p-3 sm:p-4 flex items-center gap-3">
-                                    <span class="w-2.5 h-2.5 rounded-full bg-teal-400 inline-block"></span>
-                                    <span>Hoạt Động Trải Nghiệm</span>
-                                </td>
-                                <td class="p-3 sm:p-4 text-center font-extrabold text-pastel-deep">Đạt (Đ)</td>
-                            </tr>
-                            <tr class="hover:bg-pink-50/50 transition">
-                                <td class="p-3 sm:p-4 flex items-center gap-3">
-                                    <span class="w-2.5 h-2.5 rounded-full bg-indigo-400 inline-block"></span>
-                                    <span>Giáo Dục Địa Phương</span>
-                                </td>
-                                <td class="p-3 sm:p-4 text-center font-extrabold text-pastel-deep">Đạt (Đ)</td>
-                            </tr>
+                        <tbody id="scores-table-body" class="divide-y divide-pink-100 text-gray-700 font-semibold text-base">
+                            <!-- Filled by JavaScript -->
                         </tbody>
                     </table>
                 </div>
+
             </div>
 
             <!-- ACTION BUTTONS -->
@@ -213,16 +162,62 @@
                     <i class="fa-solid fa-download"></i>
                     <span>Tải Ảnh PNG</span>
                 </button>
+
                 <button onclick="resetForm()" class="px-6 py-3.5 bg-white text-pastel-deep border-2 border-pink-200 hover:bg-pink-50 font-bold rounded-2xl shadow transition flex items-center gap-2">
                     <i class="fa-solid fa-rotate-left"></i>
                     <span>Nhập Tên Khác</span>
                 </button>
             </div>
         </div>
+
     </main>
 
     <!-- SCRIPT LOGIC -->
     <script>
+        // Dữ liệu bảng điểm của đầy đủ 40 học sinh lớp 6B trường TH&THCS Giang Tiên
+        const studentsData = [
+            {"name": "Lã Trọng Bảo An", "scores": {"Ngữ Văn": "8.0", "Toán": "4.0", "Tiếng Anh": "7.0", "Giáo dục công dân": "", "Lịch sử và Địa lí": "8.0", "Khoa học Tự nhiên": "9.0, 7.0", "Công nghệ": "9.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ, Đ", "GD Địa phương": "Đ, Đ"}},
+            {"name": "Lê Phúc An", "scores": {"Ngữ Văn": "9.0", "Toán": "8.0", "Tiếng Anh": "7.0", "Giáo dục công dân": "", "Lịch sử và Địa lí": "9.0", "Khoa học Tự nhiên": "8.0, 8.0", "Công nghệ": "7.0, 8.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
+            {"name": "Bùi Bảo Anh", "scores": {"Ngữ Văn": "", "Toán": "1.0, 7.0", "Tiếng Anh": "", "Giáo dục công dân": "", "Lịch sử và Địa lí": "", "Khoa học Tự nhiên": "", "Công nghệ": "8.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "Đ", "HĐTN, HN": "Đ, Đ", "GD Địa phương": "Đ, Đ"}},
+            {"name": "Trử Bảo Anh", "scores": {"Ngữ Văn": "", "Toán": "6.0, 7.0", "Tiếng Anh": "", "Giáo dục công dân": "", "Lịch sử và Địa lí": "9.0", "Khoa học Tự nhiên": "9.0, 8.0", "Công nghệ": "8.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ, Đ", "GD Địa phương": "Đ, Đ"}},
+            {"name": "Vũ Minh Châu", "scores": {"Ngữ Văn": "10", "Toán": "10", "Tiếng Anh": "10", "Giáo dục công dân": "10", "Lịch sử và Địa lí": "9.0", "Khoa học Tự nhiên": "9.0, 9.0", "Công nghệ": "9.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "Đ", "HĐTN, HN": "Đ", "GD Địa phương": "Đ, Đ"}},
+            {"name": "Hoàng Diệp", "scores": {"Ngữ Văn": "", "Toán": "9.0, 10", "Tiếng Anh": "7.0", "Giáo dục công dân": "", "Lịch sử và Địa lí": "8.0", "Khoa học Tự nhiên": "9.0, 8.0", "Công nghệ": "7.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "Đ", "HĐTN, HN": "Đ, Đ", "GD Địa phương": "Đ"}},
+            {"name": "Trần Huyền Diệu", "scores": {"Ngữ Văn": "9.0", "Toán": "9.0, 9.0", "Tiếng Anh": "", "Giáo dục công dân": "", "Lịch sử và Địa lí": "8.0", "Khoa học Tự nhiên": "8.0", "Công nghệ": "9.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ, Đ", "GD Địa phương": "Đ"}},
+            {"name": "Nguyễn Khánh Duy", "scores": {"Ngữ Văn": "", "Toán": "5.0", "Tiếng Anh": "", "Giáo dục công dân": "", "Lịch sử và Địa lí": "9.0", "Khoa học Tự nhiên": "9.0, 7.0", "Công nghệ": "8.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ, Đ", "GD Địa phương": "Đ, Đ"}},
+            {"name": "Dương Thùy Dương", "scores": {"Ngữ Văn": "", "Toán": "10", "Tiếng Anh": "7.0", "Giáo dục công dân": "", "Lịch sử và Địa lí": "", "Khoa học Tự nhiên": "9.0, 8.0", "Công nghệ": "9.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
+            {"name": "Nguyễn Thùy Dương", "scores": {"Ngữ Văn": "", "Toán": "9.0", "Tiếng Anh": "8.0", "Giáo dục công dân": "", "Lịch sử và Địa lí": "10", "Khoa học Tự nhiên": "9.0", "Công nghệ": "9.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
+            {"name": "Mai Thị Hương Giang", "scores": {"Ngữ Văn": "9.0", "Toán": "8.0, 9.0", "Tiếng Anh": "8.0", "Giáo dục công dân": "", "Lịch sử và Địa lí": "", "Khoa học Tự nhiên": "8.0", "Công nghệ": "7.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
+            {"name": "Trần Hương Giang", "scores": {"Ngữ Văn": "9.0", "Toán": "8.0, 10", "Tiếng Anh": "9.0, 8.0", "Giáo dục công dân": "", "Lịch sử và Địa lí": "", "Khoa học Tự nhiên": "8.0", "Công nghệ": "8.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ, Đ"}},
+            {"name": "Vũ Hoàng Hải", "scores": {"Ngữ Văn": "", "Toán": "", "Tiếng Anh": "7.0", "Giáo dục công dân": "9.0", "Lịch sử và Địa lí": "8.0", "Khoa học Tự nhiên": "8.0", "Công nghệ": "8.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "Đ", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
+            {"name": "Nguyễn Thị Thanh Hằng", "scores": {"Ngữ Văn": "10", "Toán": "10, 10, 10", "Tiếng Anh": "9.0, 9.0", "Giáo dục công dân": "", "Lịch sử và Địa lí": "9.0, 9.0", "Khoa học Tự nhiên": "9.0, 8.0", "Công nghệ": "9.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ, Đ"}},
+            {"name": "Phạm Gia Hân", "scores": {"Ngữ Văn": "9.0", "Toán": "10", "Tiếng Anh": "", "Giáo dục công dân": "", "Lịch sử và Địa lí": "9.0", "Khoa học Tự nhiên": "9.0, 9.0", "Công nghệ": "8.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
+            {"name": "Hà Minh Hiếu", "scores": {"Ngữ Văn": "8.0", "Toán": "10", "Tiếng Anh": "7.0", "Giáo dục công dân": "", "Lịch sử và Địa lí": "9.0", "Khoa học Tự nhiên": "9.0, 8.0", "Công nghệ": "8.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
+            {"name": "Lê Thị Thu Huế", "scores": {"Ngữ Văn": "", "Toán": "10", "Tiếng Anh": "7.0", "Giáo dục công dân": "", "Lịch sử và Địa lí": "8.0", "Khoa học Tự nhiên": "9.0", "Công nghệ": "8.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "Đ", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
+            {"name": "Trần Quang Khải", "scores": {"Ngữ Văn": "", "Toán": "", "Tiếng Anh": "", "Giáo dục công dân": "", "Lịch sử và Địa lí": "9.0", "Khoa học Tự nhiên": "7.0", "Công nghệ": "", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
+            {"name": "Diệp Hồng Khang", "scores": {"Ngữ Văn": "10", "Toán": "10, 10", "Tiếng Anh": "10, 9.0", "Giáo dục công dân": "", "Lịch sử và Địa lí": "8.0", "Khoa học Tự nhiên": "10, 8.0", "Công nghệ": "8.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
+            {"name": "Trần Duy Khánh", "scores": {"Ngữ Văn": "8.0", "Toán": "", "Tiếng Anh": "", "Giáo dục công dân": "", "Lịch sử và Địa lí": "", "Khoa học Tự nhiên": "9.0, 8.0", "Công nghệ": "8.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
+            {"name": "Ngô Gia Kiệt", "scores": {"Ngữ Văn": "8.0", "Toán": "10", "Tiếng Anh": "", "Giáo dục công dân": "", "Lịch sử và Địa lí": "8.0", "Khoa học Tự nhiên": "8.0", "Công nghệ": "7.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
+            {"name": "Hoàng Tiến Minh", "scores": {"Ngữ Văn": "10", "Toán": "", "Tiếng Anh": "8.0, 8.0", "Giáo dục công dân": "", "Lịch sử và Địa lí": "9.0", "Khoa học Tự nhiên": "9.0, 8.0", "Công nghệ": "9.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
+            {"name": "Trần Tường Minh", "scores": {"Ngữ Văn": "10", "Toán": "10", "Tiếng Anh": "8.0, 10", "Giáo dục công dân": "", "Lịch sử và Địa lí": "9.0", "Khoa học Tự nhiên": "7.0", "Công nghệ": "8.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
+            {"name": "Trần Vũ Tường Minh", "scores": {"Ngữ Văn": "", "Toán": "9.0", "Tiếng Anh": "9.0", "Giáo dục công dân": "", "Lịch sử và Địa lí": "9.0", "Khoa học Tự nhiên": "8.0", "Công nghệ": "8.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
+            {"name": "Đoàn Duy Bảo Nam", "scores": {"Ngữ Văn": "", "Toán": "9.0", "Tiếng Anh": "", "Giáo dục công dân": "", "Lịch sử và Địa lí": "", "Khoa học Tự nhiên": "9.0, 8.0", "Công nghệ": "8.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
+            {"name": "Nguyễn Ánh Ngọc", "scores": {"Ngữ Văn": "9.0", "Toán": "", "Tiếng Anh": "9.0", "Giáo dục công dân": "", "Lịch sử và Địa lí": "", "Khoa học Tự nhiên": "8.0", "Công nghệ": "8.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
+            {"name": "Đỗ Minh Nhật", "scores": {"Ngữ Văn": "8.0", "Toán": "", "Tiếng Anh": "9.0", "Giáo dục công dân": "", "Lịch sử và Địa lí": "", "Khoa học Tự nhiên": "8.0", "Công nghệ": "9.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
+            {"name": "Nguyễn Thị Thảo Nhi", "scores": {"Ngữ Văn": "8.0", "Toán": "", "Tiếng Anh": "", "Giáo dục công dân": "", "Lịch sử và Địa lí": "8.0", "Khoa học Tự nhiên": "8.0", "Công nghệ": "8.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
+            {"name": "Nguyễn Tấn Phát", "scores": {"Ngữ Văn": "", "Toán": "9.0", "Tiếng Anh": "10, 7.0", "Giáo dục công dân": "", "Lịch sử và Địa lí": "10", "Khoa học Tự nhiên": "8.0", "Công nghệ": "9.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
+            {"name": "Hà Thục Quyên", "scores": {"Ngữ Văn": "10", "Toán": "9.0", "Tiếng Anh": "", "Giáo dục công dân": "", "Lịch sử và Địa lí": "10", "Khoa học Tự nhiên": "8.0", "Công nghệ": "9.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
+            {"name": "Ngô Duy Sang", "scores": {"Ngữ Văn": "", "Toán": "10", "Tiếng Anh": "", "Giáo dục công dân": "", "Lịch sử và Địa lí": "", "Khoa học Tự nhiên": "8.0", "Công nghệ": "8.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
+            {"name": "Ngô Hùng Sơn", "scores": {"Ngữ Văn": "8.0", "Toán": "8.0", "Tiếng Anh": "", "Giáo dục công dân": "", "Lịch sử và Địa lí": "10", "Khoa học Tự nhiên": "9.0, 8.0", "Công nghệ": "7.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
+            {"name": "Lý Hướng Gia Tài", "scores": {"Ngữ Văn": "9.0", "Toán": "9.0", "Tiếng Anh": "8.0", "Giáo dục công dân": "", "Lịch sử và Địa lí": "", "Khoa học Tự nhiên": "7.0", "Công nghệ": "8.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
+            {"name": "Hoàng Thị Thu", "scores": {"Ngữ Văn": "8.0", "Toán": "9.0, 10", "Tiếng Anh": "7.0", "Giáo dục công dân": "", "Lịch sử và Địa lí": "9.0", "Khoa học Tự nhiên": "8.0", "Công nghệ": "5.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
+            {"name": "Đào Hà Thư", "scores": {"Ngữ Văn": "8.0", "Toán": "10", "Tiếng Anh": "", "Giáo dục công dân": "", "Lịch sử và Địa lí": "8.0", "Khoa học Tự nhiên": "9.0", "Công nghệ": "8.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
+            {"name": "Nguyễn Thị Quỳnh Trang", "scores": {"Ngữ Văn": "8.0", "Toán": "9.0", "Tiếng Anh": "8.0", "Giáo dục công dân": "", "Lịch sử và Địa lí": "", "Khoa học Tự nhiên": "9.0, 8.0", "Công nghệ": "9.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
+            {"name": "Lê Thanh Tùng", "scores": {"Ngữ Văn": "9.0", "Toán": "9.0", "Tiếng Anh": "7.0", "Giáo dục công dân": "", "Lịch sử và Địa lí": "10, 9.0", "Khoa học Tự nhiên": "9.0, 8.0", "Công nghệ": "7.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "Đ", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
+            {"name": "Hoàng Bảo Uyên", "scores": {"Ngữ Văn": "9.0", "Toán": "9.0", "Tiếng Anh": "9.0, 8.0", "Giáo dục công dân": "", "Lịch sử và Địa lí": "9.0", "Khoa học Tự nhiên": "9.0", "Công nghệ": "9.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
+            {"name": "Hoàng Hà Vân", "scores": {"Ngữ Văn": "10", "Toán": "10", "Tiếng Anh": "9.0, 10", "Giáo dục công dân": "10", "Lịch sử và Địa lí": "10, 9.0", "Khoa học Tự nhiên": "9.0", "Công nghệ": "10", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
+            {"name": "Hồ Xuân Việt", "scores": {"Ngữ Văn": "8.0", "Toán": "9.0", "Tiếng Anh": "6.0", "Giáo dục công dân": "", "Lịch sử và Địa lí": "", "Khoa học Tự nhiên": "7.0", "Công nghệ": "8.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}}
+        ];
+
         // Floating Hearts generator
         function createHearts() {
             const container = document.getElementById('heart-container');
@@ -245,16 +240,53 @@
             event.preventDefault();
             const nameInput = document.getElementById('student-name-input').value.trim();
             if (!nameInput) return;
-            document.getElementById('display-name').textContent = nameInput;
+
+            // Tìm học sinh chính xác hoặc tương đối
+            const lowerInput = nameInput.toLowerCase();
+            let foundStudent = studentsData.find(s => s.name.toLowerCase() === lowerInput);
+
+            const tableBody = document.getElementById('scores-table-body');
+            tableBody.innerHTML = '';
+
+            if (foundStudent) {
+                document.getElementById('display-name').textContent = foundStudent.name;
+                for (const [subject, score] of Object.entries(foundStudent.scores)) {
+                    const row = document.createElement('tr');
+                    row.className = 'hover:bg-pink-50/50 transition';
+                    row.innerHTML = `
+                        <td class="p-3 flex items-center gap-3">
+                            <span class="w-2.5 h-2.5 rounded-full bg-pastel-rose inline-block"></span>
+                            <span>${subject}</span>
+                        </td>
+                        <td class="p-3 text-center font-extrabold text-pastel-deep">${score || '-'}</td>
+                    `;
+                    tableBody.appendChild(row);
+                }
+            } else {
+                // Nếu tên nhập không có trong sổ 40 HS, vẫn hiện bảng và ô điểm để trống (-)
+                document.getElementById('display-name').textContent = nameInput;
+                const defaultSubjects = ["Toán", "Ngữ Văn", "Tiếng Anh", "Khoa học Tự nhiên", "Lịch sử và Địa lí", "Công nghệ", "Tin học", "Giáo dục công dân", "HĐTN, HN", "GD Địa phương"];
+                for (const subject of defaultSubjects) {
+                    const row = document.createElement('tr');
+                    row.className = 'hover:bg-pink-50/50 transition';
+                    row.innerHTML = `
+                        <td class="p-3 flex items-center gap-3">
+                            <span class="w-2.5 h-2.5 rounded-full bg-pastel-rose inline-block"></span>
+                            <span>${subject}</span>
+                        </td>
+                        <td class="p-3 text-center font-extrabold text-pastel-deep">-</td>
+                    `;
+                    tableBody.appendChild(row);
+                }
+            }
             
-            // Toggle view
             const inputSec = document.getElementById('input-section');
             const cardSec = document.getElementById('report-card-section');
+
             inputSec.classList.add('hidden');
             cardSec.classList.remove('hidden');
             cardSec.classList.add('flex');
-            
-            // Scroll to top
+
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
@@ -263,6 +295,7 @@
             document.getElementById('student-name-input').value = '';
             const inputSec = document.getElementById('input-section');
             const cardSec = document.getElementById('report-card-section');
+
             cardSec.classList.add('hidden');
             cardSec.classList.remove('flex');
             inputSec.classList.remove('hidden');
@@ -272,6 +305,7 @@
         function downloadAsPNG() {
             const cardElement = document.getElementById('printable-card');
             const name = document.getElementById('display-name').textContent || 'HocSinh';
+
             html2canvas(cardElement, {
                 scale: 2,
                 useCORS: true,
