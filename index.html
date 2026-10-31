@@ -97,7 +97,7 @@
             </div>
             
             <h1 class="text-3xl font-extrabold text-pastel-deep font-comfortaa mb-2">Bảng Điểm Học Sinh</h1>
-            <p class="text-gray-600 text-sm mb-6">Nhập chính xác tên học sinh lớp 6B trường TH&THCS Giang Tiên để xem bảng điểm 💕</p>
+            <p class="text-gray-600 text-sm mb-6">Nhập chính xác tên học sinh trường TH&THCS Giang Tiên để xem bảng điểm 💕</p>
 
             <form id="name-form" onsubmit="generateReportCard(event)" class="space-y-5">
                 <div class="relative">
@@ -122,10 +122,8 @@
                 <div class="absolute -top-12 -right-12 w-32 h-32 bg-pink-100 rounded-full opacity-60"></div>
                 <div class="absolute -bottom-12 -left-12 w-32 h-32 bg-pink-100 rounded-full opacity-60"></div>
 
-                <!-- Header Title with Logo -->
-                <div class="text-center relative z-10 mb-6 flex flex-col items-center">
-                    <img src="data:image/png;base64,ENCODED_DATA_PLACEHOLDER" alt="Logo Lớp 6B" class="w-24 h-24 sm:w-28 sm:h-28 rounded-full shadow-md border-4 border-pink-200 object-cover mb-4">
-                    
+                <!-- Header Title -->
+                <div class="text-center relative z-10 mb-6">
                     <div class="inline-block bg-pink-100 text-pastel-deep font-bold px-4 py-1.5 rounded-full text-xs sm:text-sm tracking-wide mb-3 shadow-sm">
                         <i class="fa-solid fa-star text-amber-400 mr-1"></i> TH&THCS GIANG TIÊN - LỚP 6B
                     </div>
@@ -142,7 +140,7 @@
                 <hr class="border-pink-200 border-dashed my-4">
 
                 <!-- Dynamic Table: Subject & Score -->
-                <div class="relative z-10 mb-6 overflow-x-auto">
+                <div class="relative z-10 mb-2 overflow-x-auto">
                     <table class="w-full text-left border-collapse">
                         <thead>
                             <tr class="bg-pink-100/70 text-pastel-deep text-sm uppercase tracking-wider font-bold">
@@ -154,17 +152,6 @@
                             <!-- Filled by JavaScript -->
                         </tbody>
                     </table>
-                </div>
-
-                <!-- Teacher's Comment Box (Blank) -->
-                <div class="relative z-10 bg-pink-50/80 border-2 border-dashed border-pink-200 rounded-2xl p-4 sm:p-5 text-left">
-                    <div class="flex items-center gap-2 text-pastel-deep font-bold text-sm mb-2">
-                        <i class="fa-solid fa-comment-dots text-lg"></i>
-                        <span>Nhận xét của giáo viên chủ nhiệm:</span>
-                    </div>
-                    <p class="text-gray-500 italic text-sm min-h-[40px] flex items-center">
-                        (Chưa có nhận xét)
-                    </p>
                 </div>
 
             </div>
@@ -187,6 +174,7 @@
 
     <!-- SCRIPT LOGIC -->
     <script>
+        // Dữ liệu bảng điểm của đầy đủ 40 học sinh lớp 6B trường TH&THCS Giang Tiên
         const studentsData = [
             {"name": "Lã Trọng Bảo An", "scores": {"Ngữ Văn": "8.0", "Toán": "4.0", "Tiếng Anh": "7.0", "Giáo dục công dân": "", "Lịch sử và Địa lí": "8.0", "Khoa học Tự nhiên": "9.0, 7.0", "Công nghệ": "9.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ, Đ", "GD Địa phương": "Đ, Đ"}},
             {"name": "Lê Phúc An", "scores": {"Ngữ Văn": "9.0", "Toán": "8.0", "Tiếng Anh": "7.0", "Giáo dục công dân": "", "Lịch sử và Địa lí": "9.0", "Khoa học Tự nhiên": "8.0, 8.0", "Công nghệ": "7.0, 8.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
@@ -253,6 +241,7 @@
             const nameInput = document.getElementById('student-name-input').value.trim();
             if (!nameInput) return;
 
+            // Tìm học sinh chính xác hoặc tương đối
             const lowerInput = nameInput.toLowerCase();
             let foundStudent = studentsData.find(s => s.name.toLowerCase() === lowerInput);
 
@@ -274,6 +263,7 @@
                     tableBody.appendChild(row);
                 }
             } else {
+                // Nếu tên nhập không có trong sổ 40 HS, vẫn hiện bảng và ô điểm để trống (-)
                 document.getElementById('display-name').textContent = nameInput;
                 const defaultSubjects = ["Toán", "Ngữ Văn", "Tiếng Anh", "Khoa học Tự nhiên", "Lịch sử và Địa lí", "Công nghệ", "Tin học", "Giáo dục công dân", "HĐTN, HN", "GD Địa phương"];
                 for (const subject of defaultSubjects) {
