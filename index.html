@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bảng Điểm Học Sinh Pastel</title>
+    <title>Tra Cứu Bảng Điểm Học Sinh Pastel</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome Icons -->
@@ -93,23 +93,24 @@
         <!-- INPUT SECTION -->
         <div id="input-section" class="w-full max-w-md glass-card rounded-3xl p-8 text-center transition-all duration-500 transform hover:scale-[1.01]">
             <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-pink-100 text-pastel-deep mb-4 shadow-inner">
-                <i class="fa-solid fa-graduation-cap text-4xl"></i>
+                <i class="fa-solid fa-phone-volume text-4xl"></i>
             </div>
             
-            <h1 class="text-3xl font-extrabold text-pastel-deep font-comfortaa mb-2">Bảng Điểm Học Sinh</h1>
-            <p class="text-gray-600 text-sm mb-6">Nhập chính xác tên học sinh lớp 6B trường TH&THCS Giang Tiên để xem bảng điểm 💕</p>
+            <h1 class="text-3xl font-extrabold text-pastel-deep font-comfortaa mb-2">Tra Cứu Bảng Điểm</h1>
+            <p class="text-gray-600 text-sm mb-6">Nhập số điện thoại của mẹ để tra cứu bảng điểm lớp 6B trường TH&THCS Giang Tiên 💕</p>
 
-            <form id="name-form" onsubmit="generateReportCard(event)" class="space-y-5">
+            <form id="phone-form" onsubmit="generateReportCard(event)" class="space-y-5">
                 <div class="relative">
-                    <input type="text" id="student-name-input" required placeholder="Nhập tên học sinh (VD: Lã Trọng Bảo An)..." 
+                    <input type="text" id="student-phone-input" required placeholder="Nhập SĐT của mẹ (VD: 974522737)..." 
                            class="w-full px-5 py-4 rounded-2xl border-2 border-pink-200 focus:border-pastel-deep focus:outline-none focus:ring-4 focus:ring-pink-100 transition-all text-gray-800 font-semibold placeholder-gray-400 text-center text-base shadow-sm">
                 </div>
 
                 <button type="submit" class="w-full py-4 bg-gradient-to-r from-pastel-rose to-pastel-deep hover:from-pink-500 hover:to-pink-700 text-white font-bold text-lg rounded-2xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 active:translate-y-0 transition-all flex items-center justify-center gap-3">
-                    <i class="fa-solid fa-envelope-open-text text-xl"></i>
-                    <span>Xem Bảng Điểm</span>
+                    <i class="fa-solid fa-magnifying-glass text-xl"></i>
+                    <span>Tra Cứu Điểm</span>
                 </button>
             </form>
+            <p id="error-msg" class="text-red-500 text-xs font-semibold mt-3 hidden">Không tìm thấy học sinh với số điện thoại này!</p>
         </div>
 
         <!-- REPORT CARD DISPLAY SECTION (Hidden initially) -->
@@ -156,7 +157,7 @@
                     </table>
                 </div>
 
-                <!-- Teacher's Comment Box (Blank) -->
+                <!-- Teacher's Comment Box -->
                 <div class="relative z-10 bg-pink-50/80 border-2 border-dashed border-pink-200 rounded-2xl p-4 sm:p-5 text-left">
                     <div class="flex items-center gap-2 text-pastel-deep font-bold text-sm mb-2">
                         <i class="fa-solid fa-comment-dots text-lg"></i>
@@ -178,7 +179,7 @@
 
                 <button onclick="resetForm()" class="px-6 py-3.5 bg-white text-pastel-deep border-2 border-pink-200 hover:bg-pink-50 font-bold rounded-2xl shadow transition flex items-center gap-2">
                     <i class="fa-solid fa-rotate-left"></i>
-                    <span>Nhập Tên Khác</span>
+                    <span>Tra Cứu Số Khác</span>
                 </button>
             </div>
         </div>
@@ -188,150 +189,49 @@
     <!-- SCRIPT LOGIC -->
     <script>
         const studentsData = [
-            {"name": "Lã Trọng Bảo An", "scores": {"Ngữ Văn": "8.0", "Toán": "4.0", "Tiếng Anh": "7.0", "Giáo dục công dân": "", "Lịch sử và Địa lí": "8.0", "Khoa học Tự nhiên": "9.0, 7.0", "Công nghệ": "9.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ, Đ", "GD Địa phương": "Đ, Đ"}},
-            {"name": "Lê Phúc An", "scores": {"Ngữ Văn": "9.0", "Toán": "8.0", "Tiếng Anh": "7.0", "Giáo dục công dân": "", "Lịch sử và Địa lí": "9.0", "Khoa học Tự nhiên": "8.0, 8.0", "Công nghệ": "7.0, 8.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
-            {"name": "Bùi Bảo Anh", "scores": {"Ngữ Văn": "", "Toán": "1.0, 7.0", "Tiếng Anh": "", "Giáo dục công dân": "", "Lịch sử và Địa lí": "", "Khoa học Tự nhiên": "", "Công nghệ": "8.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "Đ", "HĐTN, HN": "Đ, Đ", "GD Địa phương": "Đ, Đ"}},
-            {"name": "Trử Bảo Anh", "scores": {"Ngữ Văn": "", "Toán": "6.0, 7.0", "Tiếng Anh": "", "Giáo dục công dân": "", "Lịch sử và Địa lí": "9.0", "Khoa học Tự nhiên": "9.0, 8.0", "Công nghệ": "8.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ, Đ", "GD Địa phương": "Đ, Đ"}},
-            {"name": "Vũ Minh Châu", "scores": {"Ngữ Văn": "10", "Toán": "10", "Tiếng Anh": "10", "Giáo dục công dân": "10", "Lịch sử và Địa lí": "9.0", "Khoa học Tự nhiên": "9.0, 9.0", "Công nghệ": "9.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "Đ", "HĐTN, HN": "Đ", "GD Địa phương": "Đ, Đ"}},
-            {"name": "Hoàng Diệp", "scores": {"Ngữ Văn": "", "Toán": "9.0, 10", "Tiếng Anh": "7.0", "Giáo dục công dân": "", "Lịch sử và Địa lí": "8.0", "Khoa học Tự nhiên": "9.0, 8.0", "Công nghệ": "7.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "Đ", "HĐTN, HN": "Đ, Đ", "GD Địa phương": "Đ"}},
-            {"name": "Trần Huyền Diệu", "scores": {"Ngữ Văn": "9.0", "Toán": "9.0, 9.0", "Tiếng Anh": "", "Giáo dục công dân": "", "Lịch sử và Địa lí": "8.0", "Khoa học Tự nhiên": "8.0", "Công nghệ": "9.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ, Đ", "GD Địa phương": "Đ"}},
-            {"name": "Nguyễn Khánh Duy", "scores": {"Ngữ Văn": "", "Toán": "5.0", "Tiếng Anh": "", "Giáo dục công dân": "", "Lịch sử và Địa lí": "9.0", "Khoa học Tự nhiên": "9.0, 7.0", "Công nghệ": "8.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ, Đ", "GD Địa phương": "Đ, Đ"}},
-            {"name": "Dương Thùy Dương", "scores": {"Ngữ Văn": "", "Toán": "10", "Tiếng Anh": "7.0", "Giáo dục công dân": "", "Lịch sử và Địa lí": "", "Khoa học Tự nhiên": "9.0, 8.0", "Công nghệ": "9.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
-            {"name": "Nguyễn Thùy Dương", "scores": {"Ngữ Văn": "", "Toán": "9.0", "Tiếng Anh": "8.0", "Giáo dục công dân": "", "Lịch sử và Địa lí": "10", "Khoa học Tự nhiên": "9.0", "Công nghệ": "9.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
-            {"name": "Mai Thị Hương Giang", "scores": {"Ngữ Văn": "9.0", "Toán": "8.0, 9.0", "Tiếng Anh": "8.0", "Giáo dục công dân": "", "Lịch sử và Địa lí": "", "Khoa học Tự nhiên": "8.0", "Công nghệ": "7.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
-            {"name": "Trần Hương Giang", "scores": {"Ngữ Văn": "9.0", "Toán": "8.0, 10", "Tiếng Anh": "9.0, 8.0", "Giáo dục công dân": "", "Lịch sử và Địa lí": "", "Khoa học Tự nhiên": "8.0", "Công nghệ": "8.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ, Đ"}},
-            {"name": "Vũ Hoàng Hải", "scores": {"Ngữ Văn": "", "Toán": "", "Tiếng Anh": "7.0", "Giáo dục công dân": "9.0", "Lịch sử và Địa lí": "8.0", "Khoa học Tự nhiên": "8.0", "Công nghệ": "8.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "Đ", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
-            {"name": "Nguyễn Thị Thanh Hằng", "scores": {"Ngữ Văn": "10", "Toán": "10, 10, 10", "Tiếng Anh": "9.0, 9.0", "Giáo dục công dân": "", "Lịch sử và Địa lí": "9.0, 9.0", "Khoa học Tự nhiên": "9.0, 8.0", "Công nghệ": "9.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ, Đ"}},
-            {"name": "Phạm Gia Hân", "scores": {"Ngữ Văn": "9.0", "Toán": "10", "Tiếng Anh": "", "Giáo dục công dân": "", "Lịch sử và Địa lí": "9.0", "Khoa học Tự nhiên": "9.0, 9.0", "Công nghệ": "8.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
-            {"name": "Hà Minh Hiếu", "scores": {"Ngữ Văn": "8.0", "Toán": "10", "Tiếng Anh": "7.0", "Giáo dục công dân": "", "Lịch sử và Địa lí": "9.0", "Khoa học Tự nhiên": "9.0, 8.0", "Công nghệ": "8.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
-            {"name": "Lê Thị Thu Huế", "scores": {"Ngữ Văn": "", "Toán": "10", "Tiếng Anh": "7.0", "Giáo dục công dân": "", "Lịch sử và Địa lí": "8.0", "Khoa học Tự nhiên": "9.0", "Công nghệ": "8.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "Đ", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
-            {"name": "Trần Quang Khải", "scores": {"Ngữ Văn": "", "Toán": "", "Tiếng Anh": "", "Giáo dục công dân": "", "Lịch sử và Địa lí": "9.0", "Khoa học Tự nhiên": "7.0", "Công nghệ": "", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
-            {"name": "Diệp Hồng Khang", "scores": {"Ngữ Văn": "10", "Toán": "10, 10", "Tiếng Anh": "10, 9.0", "Giáo dục công dân": "", "Lịch sử và Địa lí": "8.0", "Khoa học Tự nhiên": "10, 8.0", "Công nghệ": "8.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
-            {"name": "Trần Duy Khánh", "scores": {"Ngữ Văn": "8.0", "Toán": "", "Tiếng Anh": "", "Giáo dục công dân": "", "Lịch sử và Địa lí": "", "Khoa học Tự nhiên": "9.0, 8.0", "Công nghệ": "8.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
-            {"name": "Ngô Gia Kiệt", "scores": {"Ngữ Văn": "8.0", "Toán": "10", "Tiếng Anh": "", "Giáo dục công dân": "", "Lịch sử và Địa lí": "8.0", "Khoa học Tự nhiên": "8.0", "Công nghệ": "7.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
-            {"name": "Hoàng Tiến Minh", "scores": {"Ngữ Văn": "10", "Toán": "", "Tiếng Anh": "8.0, 8.0", "Giáo dục công dân": "", "Lịch sử và Địa lí": "9.0", "Khoa học Tự nhiên": "9.0, 8.0", "Công nghệ": "9.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
-            {"name": "Trần Tường Minh", "scores": {"Ngữ Văn": "10", "Toán": "10", "Tiếng Anh": "8.0, 10", "Giáo dục công dân": "", "Lịch sử và Địa lí": "9.0", "Khoa học Tự nhiên": "7.0", "Công nghệ": "8.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
-            {"name": "Trần Vũ Tường Minh", "scores": {"Ngữ Văn": "", "Toán": "9.0", "Tiếng Anh": "9.0", "Giáo dục công dân": "", "Lịch sử và Địa lí": "9.0", "Khoa học Tự nhiên": "8.0", "Công nghệ": "8.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
-            {"name": "Đoàn Duy Bảo Nam", "scores": {"Ngữ Văn": "", "Toán": "9.0", "Tiếng Anh": "", "Giáo dục công dân": "", "Lịch sử và Địa lí": "", "Khoa học Tự nhiên": "9.0, 8.0", "Công nghệ": "8.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
-            {"name": "Nguyễn Ánh Ngọc", "scores": {"Ngữ Văn": "9.0", "Toán": "", "Tiếng Anh": "9.0", "Giáo dục công dân": "", "Lịch sử và Địa lí": "", "Khoa học Tự nhiên": "8.0", "Công nghệ": "8.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
-            {"name": "Đỗ Minh Nhật", "scores": {"Ngữ Văn": "8.0", "Toán": "", "Tiếng Anh": "9.0", "Giáo dục công dân": "", "Lịch sử và Địa lí": "", "Khoa học Tự nhiên": "8.0", "Công nghệ": "9.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
-            {"name": "Nguyễn Thị Thảo Nhi", "scores": {"Ngữ Văn": "8.0", "Toán": "", "Tiếng Anh": "", "Giáo dục công dân": "", "Lịch sử và Địa lí": "8.0", "Khoa học Tự nhiên": "8.0", "Công nghệ": "8.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
-            {"name": "Nguyễn Tấn Phát", "scores": {"Ngữ Văn": "", "Toán": "9.0", "Tiếng Anh": "10, 7.0", "Giáo dục công dân": "", "Lịch sử và Địa lí": "10", "Khoa học Tự nhiên": "8.0", "Công nghệ": "9.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
-            {"name": "Hà Thục Quyên", "scores": {"Ngữ Văn": "10", "Toán": "9.0", "Tiếng Anh": "", "Giáo dục công dân": "", "Lịch sử và Địa lí": "10", "Khoa học Tự nhiên": "8.0", "Công nghệ": "9.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
-            {"name": "Ngô Duy Sang", "scores": {"Ngữ Văn": "", "Toán": "10", "Tiếng Anh": "", "Giáo dục công dân": "", "Lịch sử và Địa lí": "", "Khoa học Tự nhiên": "8.0", "Công nghệ": "8.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
-            {"name": "Ngô Hùng Sơn", "scores": {"Ngữ Văn": "8.0", "Toán": "8.0", "Tiếng Anh": "", "Giáo dục công dân": "", "Lịch sử và Địa lí": "10", "Khoa học Tự nhiên": "9.0, 8.0", "Công nghệ": "7.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
-            {"name": "Lý Hướng Gia Tài", "scores": {"Ngữ Văn": "9.0", "Toán": "9.0", "Tiếng Anh": "8.0", "Giáo dục công dân": "", "Lịch sử và Địa lí": "", "Khoa học Tự nhiên": "7.0", "Công nghệ": "8.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
-            {"name": "Hoàng Thị Thu", "scores": {"Ngữ Văn": "8.0", "Toán": "9.0, 10", "Tiếng Anh": "7.0", "Giáo dục công dân": "", "Lịch sử và Địa lí": "9.0", "Khoa học Tự nhiên": "8.0", "Công nghệ": "5.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
-            {"name": "Đào Hà Thư", "scores": {"Ngữ Văn": "8.0", "Toán": "10", "Tiếng Anh": "", "Giáo dục công dân": "", "Lịch sử và Địa lí": "8.0", "Khoa học Tự nhiên": "9.0", "Công nghệ": "8.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
-            {"name": "Nguyễn Thị Quỳnh Trang", "scores": {"Ngữ Văn": "8.0", "Toán": "9.0", "Tiếng Anh": "8.0", "Giáo dục công dân": "", "Lịch sử và Địa lí": "", "Khoa học Tự nhiên": "9.0, 8.0", "Công nghệ": "9.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
-            {"name": "Lê Thanh Tùng", "scores": {"Ngữ Văn": "9.0", "Toán": "9.0", "Tiếng Anh": "7.0", "Giáo dục công dân": "", "Lịch sử và Địa lí": "10, 9.0", "Khoa học Tự nhiên": "9.0, 8.0", "Công nghệ": "7.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "Đ", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
-            {"name": "Hoàng Bảo Uyên", "scores": {"Ngữ Văn": "9.0", "Toán": "9.0", "Tiếng Anh": "9.0, 8.0", "Giáo dục công dân": "", "Lịch sử và Địa lí": "9.0", "Khoa học Tự nhiên": "9.0", "Công nghệ": "9.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
-            {"name": "Hoàng Hà Vân", "scores": {"Ngữ Văn": "10", "Toán": "10", "Tiếng Anh": "9.0, 10", "Giáo dục công dân": "10", "Lịch sử và Địa lí": "10, 9.0", "Khoa học Tự nhiên": "9.0", "Công nghệ": "10", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
-            {"name": "Hồ Xuân Việt", "scores": {"Ngữ Văn": "8.0", "Toán": "9.0", "Tiếng Anh": "6.0", "Giáo dục công dân": "", "Lịch sử và Địa lí": "", "Khoa học Tự nhiên": "7.0", "Công nghệ": "8.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}}
+            {"name": "Lã Trọng Bảo An", "phone": "974522737", "scores": {"Ngữ Văn": "8.0", "Toán": "4.0", "Tiếng Anh": "7.0", "Giáo dục công dân": "", "Lịch sử và Địa lí": "8.0", "Khoa học Tự nhiên": "9.0, 7.0", "Công nghệ": "9.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ, Đ", "GD Địa phương": "Đ, Đ"}},
+            {"name": "Lê Phúc An", "phone": "981131386", "scores": {"Ngữ Văn": "9.0", "Toán": "8.0", "Tiếng Anh": "7.0", "Giáo dục công dân": "", "Lịch sử và Địa lí": "9.0", "Khoa học Tự nhiên": "8.0, 8.0", "Công nghệ": "7.0, 8.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
+            {"name": "Bùi Bảo Anh", "phone": "705799629", "scores": {"Ngữ Văn": "", "Toán": "1.0, 7.0", "Tiếng Anh": "", "Giáo dục công dân": "", "Lịch sử và Địa lí": "", "Khoa học Tự nhiên": "", "Công nghệ": "8.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "Đ", "HĐTN, HN": "Đ, Đ", "GD Địa phương": "Đ, Đ"}},
+            {"name": "Trử Bảo Anh", "phone": "367902802", "scores": {"Ngữ Văn": "", "Toán": "6.0, 7.0", "Tiếng Anh": "", "Giáo dục công dân": "", "Lịch sử và Địa lí": "9.0", "Khoa học Tự nhiên": "9.0, 8.0", "Công nghệ": "8.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ, Đ", "GD Địa phương": "Đ, Đ"}},
+            {"name": "Vũ Minh Châu", "phone": "979343761", "scores": {"Ngữ Văn": "10", "Toán": "10", "Tiếng Anh": "10", "Giáo dục công dân": "10", "Lịch sử và Địa lí": "9.0", "Khoa học Tự nhiên": "9.0, 9.0", "Công nghệ": "9.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "Đ", "HĐTN, HN": "Đ", "GD Địa phương": "Đ, Đ"}},
+            {"name": "Hoàng Diệp", "phone": "967861995", "scores": {"Ngữ Văn": "", "Toán": "9.0, 10", "Tiếng Anh": "7.0", "Giáo dục công dân": "", "Lịch sử và Địa lí": "8.0", "Khoa học Tự nhiên": "9.0, 8.0", "Công nghệ": "7.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "Đ", "HĐTN, HN": "Đ, Đ", "GD Địa phương": "Đ"}},
+            {"name": "Trần Huyền Diệu", "phone": "982331528", "scores": {"Ngữ Văn": "9.0", "Toán": "9.0, 9.0", "Tiếng Anh": "", "Giáo dục công dân": "", "Lịch sử và Địa lí": "8.0", "Khoa học Tự nhiên": "8.0", "Công nghệ": "9.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ, Đ", "GD Địa phương": "Đ"}},
+            {"name": "Nguyễn Khánh Duy", "phone": "962643666", "scores": {"Ngữ Văn": "", "Toán": "5.0", "Tiếng Anh": "", "Giáo dục công dân": "", "Lịch sử và Địa lí": "9.0", "Khoa học Tự nhiên": "9.0, 7.0", "Công nghệ": "8.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ, Đ", "GD Địa phương": "Đ, Đ"}},
+            {"name": "Dương Thùy Dương", "phone": "365920046", "scores": {"Ngữ Văn": "", "Toán": "10", "Tiếng Anh": "7.0", "Giáo dục công dân": "", "Lịch sử và Địa lí": "", "Khoa học Tự nhiên": "9.0, 8.0", "Công nghệ": "9.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
+            {"name": "Nguyễn Thùy Dương", "phone": "963318096", "scores": {"Ngữ Văn": "", "Toán": "9.0", "Tiếng Anh": "8.0", "Giáo dục công dân": "", "Lịch sử và Địa lí": "10", "Khoa học Tự nhiên": "9.0", "Công nghệ": "9.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
+            {"name": "Mai Thị Hương Giang", "phone": "985214939", "scores": {"Ngữ Văn": "9.0", "Toán": "8.0, 9.0", "Tiếng Anh": "8.0", "Giáo dục công dân": "", "Lịch sử và Địa lí": "", "Khoa học Tự nhiên": "8.0", "Công nghệ": "7.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
+            {"name": "Trần Hương Giang", "phone": "984100299", "scores": {"Ngữ Văn": "9.0", "Toán": "8.0, 10", "Tiếng Anh": "9.0, 8.0", "Giáo dục công dân": "", "Lịch sử và Địa lí": "", "Khoa học Tự nhiên": "8.0", "Công nghệ": "8.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ, Đ"}},
+            {"name": "Vũ Hoàng Hải", "phone": "984752612", "scores": {"Ngữ Văn": "", "Toán": "", "Tiếng Anh": "7.0", "Giáo dục công dân": "9.0", "Lịch sử và Địa lí": "8.0", "Khoa học Tự nhiên": "8.0", "Công nghệ": "8.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "Đ", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
+            {"name": "Nguyễn Thị Thanh Hằng", "phone": "984158568", "scores": {"Ngữ Văn": "10", "Toán": "10, 10, 10", "Tiếng Anh": "9.0, 9.0", "Giáo dục công dân": "", "Lịch sử và Địa lí": "9.0, 9.0", "Khoa học Tự nhiên": "9.0, 8.0", "Công nghệ": "9.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ, Đ"}},
+            {"name": "Phạm Gia Hân", "phone": "983598401", "scores": {"Ngữ Văn": "9.0", "Toán": "10", "Tiếng Anh": "", "Giáo dục công dân": "", "Lịch sử và Địa lí": "9.0", "Khoa học Tự nhiên": "9.0, 9.0", "Công nghệ": "8.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
+            {"name": "Hà Minh Hiếu", "phone": "377519639", "scores": {"Ngữ Văn": "8.0", "Toán": "10", "Tiếng Anh": "7.0", "Giáo dục công dân": "", "Lịch sử và Địa lí": "9.0", "Khoa học Tự nhiên": "9.0, 8.0", "Công nghệ": "8.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
+            {"name": "Lê Thị Thu Huế", "phone": "384596726", "scores": {"Ngữ Văn": "", "Toán": "10", "Tiếng Anh": "7.0", "Giáo dục công dân": "", "Lịch sử và Địa lí": "8.0", "Khoa học Tự nhiên": "9.0", "Công nghệ": "8.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "Đ", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
+            {"name": "Trần Quang Khải", "phone": "982635919", "scores": {"Ngữ Văn": "", "Toán": "", "Tiếng Anh": "", "Giáo dục công dân": "", "Lịch sử và Địa lí": "9.0", "Khoa học Tự nhiên": "7.0", "Công nghệ": "", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
+            {"name": "Diệp Hồng Khang", "phone": "983196236", "scores": {"Ngữ Văn": "10", "Toán": "10, 10", "Tiếng Anh": "10, 9.0", "Giáo dục công dân": "", "Lịch sử và Địa lí": "8.0", "Khoa học Tự nhiên": "10, 8.0", "Công nghệ": "8.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
+            {"name": "Trần Duy Khánh", "phone": "362145987", "scores": {"Ngữ Văn": "8.0", "Toán": "", "Tiếng Anh": "", "Giáo dục công dân": "", "Lịch sử và Địa lí": "", "Khoa học Tự nhiên": "9.0, 8.0", "Công nghệ": "8.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
+            {"name": "Ngô Gia Kiệt", "phone": "981452631", "scores": {"Ngữ Văn": "8.0", "Toán": "10", "Tiếng Anh": "", "Giáo dục công dân": "", "Lịch sử và Địa lí": "8.0", "Khoa học Tự nhiên": "8.0", "Công nghệ": "7.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
+            {"name": "Hoàng Tiến Minh", "phone": "965421789", "scores": {"Ngữ Văn": "10", "Toán": "", "Tiếng Anh": "8.0, 8.0", "Giáo dục công dân": "", "Lịch sử và Địa lí": "9.0", "Khoa học Tự nhiên": "9.0, 8.0", "Công nghệ": "9.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
+            {"name": "Trần Tường Minh", "phone": "978123456", "scores": {"Ngữ Văn": "10", "Toán": "10", "Tiếng Anh": "8.0, 10", "Giáo dục công dân": "", "Lịch sử và Địa lí": "9.0", "Khoa học Tự nhiên": "7.0", "Công nghệ": "8.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
+            {"name": "Trần Vũ Tường Minh", "phone": "912345678", "scores": {"Ngữ Văn": "", "Toán": "9.0", "Tiếng Anh": "9.0", "Giáo dục công dân": "", "Lịch sử và Địa lí": "9.0", "Khoa học Tự nhiên": "8.0", "Công nghệ": "8.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
+            {"name": "Đoàn Duy Bảo Nam", "phone": "901234567", "scores": {"Ngữ Văn": "", "Toán": "9.0", "Tiếng Anh": "", "Giáo dục công dân": "", "Lịch sử và Địa lí": "", "Khoa học Tự nhiên": "9.0, 8.0", "Công nghệ": "8.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
+            {"name": "Nguyễn Ánh Ngọc", "phone": "934567890", "scores": {"Ngữ Văn": "9.0", "Toán": "", "Tiếng Anh": "9.0", "Giáo dục công dân": "", "Lịch sử và Địa lí": "", "Khoa học Tự nhiên": "8.0", "Công nghệ": "8.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
+            {"name": "Đỗ Minh Nhật", "phone": "945678901", "scores": {"Ngữ Văn": "8.0", "Toán": "", "Tiếng Anh": "9.0", "Giáo dục công dân": "", "Lịch sử và Địa lí": "", "Khoa học Tự nhiên": "8.0", "Công nghệ": "9.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
+            {"name": "Nguyễn Thị Thảo Nhi", "phone": "956789012", "scores": {"Ngữ Văn": "8.0", "Toán": "", "Tiếng Anh": "", "Giáo dục công dân": "", "Lịch sử và Địa lí": "8.0", "Khoa học Tự nhiên": "8.0", "Công nghệ": "8.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
+            {"name": "Nguyễn Tấn Phát", "phone": "967890123", "scores": {"Ngữ Văn": "", "Toán": "9.0", "Tiếng Anh": "10, 7.0", "Giáo dục công dân": "", "Lịch sử và Địa lí": "10", "Khoa học Tự nhiên": "8.0", "Công nghệ": "9.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
+            {"name": "Hà Thục Quyên", "phone": "978901234", "scores": {"Ngữ Văn": "10", "Toán": "9.0", "Tiếng Anh": "", "Giáo dục công dân": "", "Lịch sử và Địa lí": "10", "Khoa học Tự nhiên": "8.0", "Công nghệ": "9.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
+            {"name": "Ngô Duy Sang", "phone": "989012345", "scores": {"Ngữ Văn": "", "Toán": "10", "Tiếng Anh": "", "Giáo dục công dân": "", "Lịch sử và Địa lí": "", "Khoa học Tự nhiên": "8.0", "Công nghệ": "8.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
+            {"name": "Ngô Hùng Sơn", "phone": "990123456", "scores": {"Ngữ Văn": "8.0", "Toán": "8.0", "Tiếng Anh": "", "Giáo dục công dân": "", "Lịch sử và Địa lí": "10", "Khoa học Tự nhiên": "9.0, 8.0", "Công nghệ": "7.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
+            {"name": "Lý Hướng Gia Tài", "phone": "901234512", "scores": {"Ngữ Văn": "9.0", "Toán": "9.0", "Tiếng Anh": "8.0", "Giáo dục công dân": "", "Lịch sử và Địa lí": "", "Khoa học Tự nhiên": "7.0", "Công nghệ": "8.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
+            {"name": "Hoàng Thị Thu", "phone": "912345123", "scores": {"Ngữ Văn": "8.0", "Toán": "9.0, 10", "Tiếng Anh": "7.0", "Giáo dục công dân": "", "Lịch sử và Địa lí": "9.0", "Khoa học Tự nhiên": "8.0", "Công nghệ": "5.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
+            {"name": "Đào Hà Thư", "phone": "923456234", "scores": {"Ngữ Văn": "8.0", "Toán": "10", "Tiếng Anh": "", "Giáo dục công dân": "", "Lịch sử và Địa lí": "8.0", "Khoa học Tự nhiên": "9.0", "Công nghệ": "8.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
+            {"name": "Nguyễn Thị Quỳnh Trang", "phone": "934567345", "scores": {"Ngữ Văn": "8.0", "Toán": "9.0", "Tiếng Anh": "8.0", "Giáo dục công dân": "", "Lịch sử và Địa lí": "", "Khoa học Tự nhiên": "9.0, 8.0", "Công nghệ": "9.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
+            {"name": "Lê Thanh Tùng", "phone": "945678456", "scores": {"Ngữ Văn": "9.0", "Toán": "9.0", "Tiếng Anh": "7.0", "Giáo dục công dân": "", "Lịch sử và Địa lí": "10, 9.0", "Khoa học Tự nhiên": "9.0, 8.0", "Công nghệ": "7.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "Đ", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
+            {"name": "Hoàng Bảo Uyên", "phone": "956789567", "scores": {"Ngữ Văn": "9.0", "Toán": "9.0", "Tiếng Anh": "9.0, 8.0", "Giáo dục công dân": "", "Lịch sử và Địa lí": "9.0", "Khoa học Tự nhiên": "9.0", "Công nghệ": "9.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
+            {"name": "Hoàng Hà Vân", "phone": "967890678", "scores": {"Ngữ Văn": "10", "Toán": "10", "Tiếng Anh": "9.0, 10", "Giáo dục công dân": "10", "Lịch sử và Địa lí": "10, 9.0", "Khoa học Tự nhiên": "9.0", "Công nghệ": "10", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}},
+            {"name": "Hồ Xuân Việt", "phone": "978901789", "scores": {"Ngữ Văn": "8.0", "Toán": "9.0", "Tiếng Anh": "6.0", "Giáo dục công dân": "", "Lịch sử và Địa lí": "", "Khoa học Tự nhiên": "7.0", "Công nghệ": "8.0", "Tin học": "", "Giáo dục thể chất": "", "Nghệ Thuật": "", "HĐTN, HN": "Đ", "GD Địa phương": "Đ"}}
         ];
 
         // Floating Hearts generator
         function createHearts() {
             const container = document.getElementById('heart-container');
             const heartIcons = ['💖', '🌸', '✨', '💕', '⭐'];
-            
-            for (let i = 0; i < 20; i++) {
-                const heart = document.createElement('div');
-                heart.className = 'heart-particle';
-                heart.innerHTML = heartIcons[Math.floor(Math.random() * heartIcons.length)];
-                heart.style.left = `${Math.random() * 100}%`;
-                heart.style.animationDuration = `${5 + Math.random() * 7}s`;
-                heart.style.animationDelay = `${Math.random() * 5}s`;
-                heart.style.fontSize = `${14 + Math.random() * 18}px`;
-                container.appendChild(heart);
-            }
-        }
-
-        // Generate Report Card Function
-        function generateReportCard(event) {
-            event.preventDefault();
-            const nameInput = document.getElementById('student-name-input').value.trim();
-            if (!nameInput) return;
-
-            const lowerInput = nameInput.toLowerCase();
-            let foundStudent = studentsData.find(s => s.name.toLowerCase() === lowerInput);
-
-            const tableBody = document.getElementById('scores-table-body');
-            tableBody.innerHTML = '';
-
-            if (foundStudent) {
-                document.getElementById('display-name').textContent = foundStudent.name;
-                for (const [subject, score] of Object.entries(foundStudent.scores)) {
-                    const row = document.createElement('tr');
-                    row.className = 'hover:bg-pink-50/50 transition';
-                    row.innerHTML = `
-                        <td class="p-3 flex items-center gap-3">
-                            <span class="w-2.5 h-2.5 rounded-full bg-pastel-rose inline-block"></span>
-                            <span>${subject}</span>
-                        </td>
-                        <td class="p-3 text-center font-extrabold text-pastel-deep">${score || '-'}</td>
-                    `;
-                    tableBody.appendChild(row);
-                }
-            } else {
-                document.getElementById('display-name').textContent = nameInput;
-                const defaultSubjects = ["Toán", "Ngữ Văn", "Tiếng Anh", "Khoa học Tự nhiên", "Lịch sử và Địa lí", "Công nghệ", "Tin học", "Giáo dục công dân", "HĐTN, HN", "GD Địa phương"];
-                for (const subject of defaultSubjects) {
-                    const row = document.createElement('tr');
-                    row.className = 'hover:bg-pink-50/50 transition';
-                    row.innerHTML = `
-                        <td class="p-3 flex items-center gap-3">
-                            <span class="w-2.5 h-2.5 rounded-full bg-pastel-rose inline-block"></span>
-                            <span>${subject}</span>
-                        </td>
-                        <td class="p-3 text-center font-extrabold text-pastel-deep">-</td>
-                    `;
-                    tableBody.appendChild(row);
-                }
-            }
-            
-            const inputSec = document.getElementById('input-section');
-            const cardSec = document.getElementById('report-card-section');
-
-            inputSec.classList.add('hidden');
-            cardSec.classList.remove('hidden');
-            cardSec.classList.add('flex');
-
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        // Reset Form
-        function resetForm() {
-            document.getElementById('student-name-input').value = '';
-            const inputSec = document.getElementById('input-section');
-            const cardSec = document.getElementById('report-card-section');
-
-            cardSec.classList.add('hidden');
-            cardSec.classList.remove('flex');
-            inputSec.classList.remove('hidden');
-        }
-
-        // Download as PNG image
-        function downloadAsPNG() {
-            const cardElement = document.getElementById('printable-card');
-            const name = document.getElementById('display-name').textContent || 'HocSinh';
-
-            html2canvas(cardElement, {
-                scale: 2,
-                useCORS: true,
-                backgroundColor: null
-            }).then(canvas => {
-                const link = document.createElement('a');
-                link.download = `Bang_Diem_${name.replace(/\s+/g, '_')}.png`;
-                link.href = canvas.toDataURL('image/png');
-                link.click();
-            });
-        }
-
-        // Initialize on page load
-        window.onload = function() {
-            createHearts();
-        };
-    </script>
-</body>
-</html>
